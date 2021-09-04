@@ -2,7 +2,12 @@ pipeline {
     parameters {
         choice(name: 'PLATFORM_FILTER', choices: ['all', 'linux', 'windows', 'mac'], description: 'Run on specific platform')
     }
-    agent any
+    agent {
+        kubernetes {
+            inheritFrom 'build-tools'
+            defaultContainer 'maven'
+        }
+    }
     stages {
         stage('BuildAndTest') {
             matrix {
